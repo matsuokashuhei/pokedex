@@ -1,5 +1,7 @@
+use std::cmp::PartialEq;
 use std::convert::TryFrom;
 
+#[derive(PartialEq, Clone)]
 pub struct PokemonNumber(u16);
 
 impl TryFrom<u16> for PokemonNumber {
@@ -34,8 +36,19 @@ impl TryFrom<String> for PokemonName {
 
 enum PokemonType {
     Electric,
+    Fire,
 }
 
+impl TryFrom<String> for PokemonType {
+    type Error = ();
+    fn try_from(t: String) -> Result<Self, Self::Error> {
+        match t.as_str() {
+            "Electric" => Ok(Self::Electric),
+            "Fire" => Ok(Self::Fire),
+            _ => Err(()),
+        }
+    }
+}
 pub struct PokemonTypes(Vec<PokemonType>);
 
 impl TryFrom<Vec<String>> for PokemonTypes {
@@ -56,12 +69,18 @@ impl TryFrom<Vec<String>> for PokemonTypes {
     }
 }
 
-impl TryFrom<String> for PokemonType {
-    type Error = ();
-    fn try_from(t: String) -> Result<Self, Self::Error> {
-        match t.as_str() {
-            "Electric" => Ok(Self::Electric),
-            _ => Err(()),
+pub struct Pokemon {
+    pub number: PokemonNumber,
+    name: PokemonName,
+    types: PokemonTypes,
+}
+
+impl Pokemon {
+    pub fn new(number: PokemonNumber, name: PokemonName, types: PokemonTypes) -> Self {
+        Self {
+            number,
+            name,
+            types,
         }
     }
 }
