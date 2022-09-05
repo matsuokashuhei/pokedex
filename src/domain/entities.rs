@@ -1,5 +1,7 @@
+use std::cmp::PartialEq;
 use std::convert::TryFrom;
 
+#[derive(PartialEq, Clone)]
 pub struct PokemonNumber(u16);
 
 impl TryFrom<u16> for PokemonNumber {
